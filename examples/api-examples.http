@@ -1,0 +1,81 @@
+### Wallet Service API Examples
+### Use with REST Client extensions like VS Code REST Client
+
+@baseUrl = http://localhost:3000/api/wallet
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Get Asset Types
+GET {{baseUrl}}/assets
+
+### Get Balance for User 001 (Gold Coins)
+GET {{baseUrl}}/balance?userId=user_001&assetTypeId=1
+
+### Get All Wallets for User 001
+GET {{baseUrl}}/wallets/user_001
+
+### Get Transaction History for User 001
+GET {{baseUrl}}/history?userId=user_001&limit=10
+
+### Top-up Transaction - User purchases 100 Gold Coins
+POST {{baseUrl}}/topup
+Content-Type: application/json
+
+{
+  "idempotencyKey": "topup_example_001",
+  "userId": "user_001",
+  "assetTypeId": 1,
+  "amount": 100,
+  "referenceId": "payment_example_001",
+  "description": "Purchase of 100 Gold Coins",
+  "createdBy": "payment_system"
+}
+
+### Bonus Transaction - System gives 50 Gold Coins as bonus
+POST {{baseUrl}}/bonus
+Content-Type: application/json
+
+{
+  "idempotencyKey": "bonus_example_001",
+  "userId": "user_002",
+  "assetTypeId": 1,
+  "amount": 50,
+  "referenceId": "referral_example_001",
+  "description": "Referral bonus for inviting friend",
+  "createdBy": "referral_system"
+}
+
+### Spend Transaction - User spends 25 Gold Coins
+POST {{baseUrl}}/spend
+Content-Type: application/json
+
+{
+  "idempotencyKey": "spend_example_001",
+  "userId": "user_001",
+  "assetTypeId": 1,
+  "amount": 25,
+  "referenceId": "order_example_001",
+  "description": "Purchase of in-game sword",
+  "createdBy": "user_001"
+}
+
+### Test Idempotency - Same transaction should return same result
+POST {{baseUrl}}/topup
+Content-Type: application/json
+
+{
+  "idempotencyKey": "topup_example_001",
+  "userId": "user_001",
+  "assetTypeId": 1,
+  "amount": 100,
+  "referenceId": "payment_example_001",
+  "description": "Purchase of 100 Gold Coins (duplicate)",
+  "createdBy": "payment_system"
+}
+
+### Get Balance After Transactions
+GET {{baseUrl}}/balance?userId=user_001&assetTypeId=1
+
+### Get Updated Transaction History
+GET {{baseUrl}}/history?userId=user_001&limit=5
