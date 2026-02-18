@@ -19,9 +19,11 @@ class DatabaseConnection {
                 database: process.env.DB_NAME || 'wallet_service',
                 user: process.env.DB_USER || 'wallet_user',
                 password: process.env.DB_PASSWORD || 'wallet_password',
+                connectionString: process.env.DATABASE_URL,
                 max: 20, // Maximum number of clients in the pool
                 idleTimeoutMillis: 30000, // How long a client is allowed to remain idle before being closed
                 connectionTimeoutMillis: 2000, // How long to wait when connecting a new client
+                ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
             });
 
             // Test the connection
