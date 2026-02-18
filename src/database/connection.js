@@ -66,9 +66,8 @@ class DatabaseConnection {
             try {
                 await client.query('BEGIN');
                 
-                // Set transaction isolation level and deadlock handling
+                // Set transaction isolation level
                 await client.query('SET TRANSACTION ISOLATION LEVEL READ COMMITTED');
-                await client.query('SET deadlock_timeout TO 5000'); // 5 seconds
                 
                 const result = await callback(client);
                 
